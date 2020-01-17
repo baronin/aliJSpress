@@ -1,0 +1,29 @@
+{
+  "name": "alijspress",
+  "version": "1.0.0",
+  "description": "javascript",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-watch": "^5.0.1",
+    "node-sass": "^4.11.0"
+  },
+  "scripts": {
+    "dev": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baronin/aliJSpress.git"
+  },
+  "author": "baronin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baronin/aliJSpress/issues"
+  },
+  "homepage": "https://github.com/baronin/aliJSpress#readme"
+}

@@ -1,36 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-const searchClass = document.querySelector('.search');
-const cartBtnId = document.getElementById('cart');
-const wishListBtnId = document.getElementById('wishlist');
-const cartClass = document.querySelector('.cart');
-const closeCart = document.querySelector('.cart-close');
-const goodWrapper = document.querySelector('.goods-wrapper');
+    const searchClass = document.querySelector('.search');
+    const cartBtnId = document.getElementById('cart');
+    const wishListBtnId = document.getElementById('wishlist');
+    const cartClass = document.querySelector('.cart');
+    const closeCart = document.querySelector('.cart-close');
+    const goodWrapper = document.querySelector('.goods-wrapper');
 
-goodWrapper.appendChild(createCardGoods())
+    goodWrapper.appendChild(createCardGoods())
 
+    const openCart = () => {
+        cartClass.style.display = 'block';
+    };
+    const isCloseCart = (event) => {
+        const target = event.target;
+        if (target === closeCart || target.classList.contains('cart-close')) {
+            cartClass.style.display = "none";
+        }
+    };
+    const isCloseEsc = cartBtnId.onkeydown = function (evt) {
+        evt = evt || window.event;
+        var isEscape = false;
+        if ("key" in evt) {
+            isEscape = (evt.key === "Escape" || evt.key === "Esc");
+        } else {
+            isEscape = (evt.keyCode === 27);
+        }
+        if (isEscape) {
+            cartClass.style.display = "none";
+        }
+    };
 
+    cartBtnId.addEventListener('click', openCart);
+    closeCart.addEventListener('click', isCloseCart);
 
-const openCart = () => {
-    cartClass.style.display = 'block';
-}
-
-const isCloseCart = () => {
-    cartClass.style.display = "none";
-}
-cartBtnId.addEventListener('click', openCart);
-closeCart.addEventListener('click', isCloseCart);
-
+    isCloseEsc();
 });
-// let url = './db/db.json';
-// let response  = await fetch(url);
-// if(response .ok) {
-//     console.log('if promise ', response )
-//     let json = await response.json();
-// } else {
-//     alert("Ошибка HTTP: " + response.status);
-// }
-// console.log(response );
+
 
 const createCardGoods = (id, title, price, img) => {
     const card = document.createElement('div');

@@ -198,7 +198,7 @@ nav {
     position: relative;
     flex-grow: 1;
     border: 3px solid $main-color;
-
+    border-radius: 5px;
 
     &-wrapper {
       justify-content: flex-start;
@@ -542,7 +542,7 @@ nav {
     border: none;
 
     &:hover {
-      background-color: #f90;
+      background-color: red;
       background-position: 4px -2588px;
     }
 
@@ -587,7 +587,8 @@ nav {
   &-body {
     position: relative;
     margin: auto;
-    width: 1024px;
+    max-width: 1024px;
+    width: 100%;
     min-height: 200px;
     max-height: 80vh;
     background-color: #fff;
