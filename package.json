@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/baronin/aliJSpress/issues"
   },
-  "homepage": "https://github.com/baronin/aliJSpress#readme"
+  "homepage": "https://github.com/baronin/aliJSpress#readme",
+  "dependencies": {
+    "modal": "^1.2.0"
+  }
 }
