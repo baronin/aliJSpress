@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishListBtnId = document.getElementById('wishlist');
     const closeCartClass = document.querySelector('.cart-close');
     const goodWrapperClass = document.querySelector('.goods-wrapper');
-    const cardAddWishlistClass = document.querySelector('.card-add-wishlist');
     const cartClass = document.querySelector('.cart');
-    const cardClass = document.querySelector('.card');
     const categoryClass = document.querySelector('.category');
     const searchClass = document.querySelector('.search');
+    const cardCounter = cartBtnId.querySelector('.counter');
+    const wishListCounter = wishListBtnId.querySelector('.counter');
 
     let wishlist = [];
 
@@ -84,6 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         input.Value = '';
     };
 
+    const checkCount = () => {
+        wishListCounter.textContent = wishlist.length;
+    }
+
     const toggleWishlist = (id, el) => {
         if (wishlist.includes(id) + 1 ) {
             wishlist.splice(wishlist.indexOf(id), 1)
@@ -92,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wishlist.push(id);
             el.classList.add('active');
         }
+        checkCount();
     }
 
     const handlerGoods = event => {
