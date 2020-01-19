@@ -26,6 +26,29 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(filter)
             .then(handler);
     };
+    const createCardGoods = (id, title, price, img) => {
+        const card = document.createElement('div');
+        card.className = 'card-wrapper col-12 col-md-6 col-lg-4 col-xl-3 pb-3';
+        card.innerHTML = `
+                            <div class="card">
+                        <div class="card-img-wrapper">
+                            <img class="card-img-top" src="img/${img}" alt="">
+                            <button
+                            class="card-add-wishlist ${wishlist.includes(id) ? 'active' : ''}"
+                            data-goods-id="${id}"
+                            ></button>
+                        </div>
+                        <div class="card-body justify-content-between">
+                            <a href="#" class="card-title">${title}</a>
+                            <div class="card-price">${price} ₽</div>
+                            <div>
+                                <button class="card-add-cart">Добавить в корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                        `;
+        return card;
+    };
 
     const randomSort = goods => goods.sort(() => Math.random() - 0.5);
     const chooseCategories = event => {
@@ -43,13 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
         goodWrapperClass.textContent = "";
         if (goods.length) {
             goods.forEach(({id, title, price, imgMin}) => {
-                goodWrapperClass.appendChild(
+                goodWrapperClass.append(
                     createCardGoods(id, title, price, `../${imgMin}`));
             });
         } else {
             goodWrapperClass.textContent = "Didn't found a product";
         }
-
     };
 
     const openCart = event => {
@@ -86,56 +108,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkCount = () => {
         wishListCounter.textContent = wishlist.length;
-    }
+    };
+
+    const storageQuery = (get) => {
+        if (get) {
+            if (localStorage.getItem('wishlist')) {
+                const wishListStorage = JSON.parse(localStorage.getItem('wishlist'));
+                wishListStorage.forEach((id) => wishlist.push(id));
+            }
+        } else {
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+        checkCount();
+    };
 
     const toggleWishlist = (id, el) => {
-        if (wishlist.includes(id) + 1 ) {
-            wishlist.splice(wishlist.indexOf(id), 1)
+        if (wishlist.includes(id)) {
+            wishlist.splice(wishlist.indexOf(id), 1);
             el.classList.remove('active');
         } else {
             wishlist.push(id);
+            console.log(wishlist);
             el.classList.add('active');
         }
         checkCount();
-    }
+        storageQuery();
+    };
 
     const handlerGoods = event => {
         const target = event.target;
+        console.log(target.dataset.goodsId);
 
         if (target.classList.contains('card-add-wishlist')) {
             toggleWishlist(target.dataset.goodsId, target);
         }
     };
 
+    const showWishList = () => {
+        getGoodsAPI(renderCard, goods => goods.filter(item => wishlist.includes(item.id)))
+    }
     cartBtnId.addEventListener('click', openCart);
     closeCartClass.addEventListener('click', isCloseCart);
     categoryClass.addEventListener('click', chooseCategories);
     searchClass.addEventListener('submit', searchGoods);
     goodWrapperClass.addEventListener('click', handlerGoods);
+    wishListBtnId.addEventListener('click', showWishList);
 
-    const createCardGoods = (id, title, price, img) => {
-        const card = document.createElement('div');
-        card.className = 'card-wrapper col-12 col-md-6 col-lg-4 col-xl-3 pb-3';
-        card.innerHTML = `
-                            <div class="card">
-                        <div class="card-img-wrapper">
-                            <img class="card-img-top" src="img/${img}" alt="">
-                            <button
-                            class="card-add-wishlist ${wishlist.includes(id) + 1 ? 'active' : ''}"
-                            data-goods-id-${id}
-                            ></button>
-                        </div>
-                        <div class="card-body justify-content-between">
-                            <a href="#" class="card-title">${title}</a>
-                            <div class="card-price">${price} ₽</div>
-                            <div>
-                                <button class="card-add-cart">Добавить в корзину</button>
-                            </div>
-                        </div>
-                    </div>
-                        `;
-        return card;
-    };
     getGoodsAPI(renderCard, randomSort);
+    storageQuery(true);
 });
 
