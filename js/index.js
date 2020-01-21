@@ -14,11 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let wishlist = [];
     let goodsBasket = {};
 
-    const loading = () => {
-        goodWrapperClass.innerHTML = `
-    <div id="spinner"><div class="spinner-loading"><div><div><div></div>
+    const loading = (nameFunc) => {
+
+        const spinner = `<div id="spinner"><div class="spinner-loading"><div><div><div></div>
     </div><div><div></div></div><div><div></div></div><div><div></div></div></div></div></div>`;
-    }
+        if (nameFunc === 'RenderCard') {
+            goodWrapperClass.innerHTML = spinner;
+        }
+        if (nameFunc === 'renderBasket') {
+            cartWrapElem.innerHTML = spinner;
+
+        }
+        console.log(nameFunc)
+    };
 
     const urlAPI = 'db/db.json';
 
@@ -77,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
 
     const createCartGoodsBasket = (id, title, price, img) => {
+        console.log('click');
         const card = document.createElement('div');
         card.className = 'goods';
         card.innerHTML = `
@@ -96,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="goods-delete"
                     data-goods-id="${id}"></button>
             </div>
-            <div class="goods-count">1</div>
+            <div class="goods-count">${goodsBasket[id]}</div>
             </div>
         `;
         return card;
@@ -113,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const  showBasketCard = goods => goods.filter(item => goodsBasket.hasOwnProperty(item.id));
+    const showBasketCard = goods => goods.filter(item => goodsBasket.hasOwnProperty(item.id));
 
     const openCart = event => {
         event.preventDefault();
@@ -123,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getGoodsAPI = (handler, filter) => {
-        loading();
+        loading(handler.name);
         fetch(urlAPI)
             .then(response => response.json())
             .then(filter)
@@ -166,7 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cookieQuery = get => {
         if (get) {
-            goodsBasket = JSON.parse(getCookie('goodsBasket'));
+            if (getCookie('goodsBasket')) {
+                goodsBasket = JSON.parse(getCookie('goodsBasket'));
+            }
             checkCount();
         } else {
             document.cookie = `goodsBasket=${JSON.stringify(goodsBasket)}; max-age=86400e3`;
